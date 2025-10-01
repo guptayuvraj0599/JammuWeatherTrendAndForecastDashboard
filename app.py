@@ -15,6 +15,7 @@ import os
 # Create a .streamlit/secrets.toml file with:
 # [api]
 # openweather_api_key = "YOUR_OPENWEATHER_API_KEY"
+OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY")
 try:
     OPENWEATHER_API_KEY = st.secrets["api"]["openweather_api_key"]
 except (KeyError, FileNotFoundError):
@@ -59,6 +60,7 @@ def get_historical_data(lat, lon, start_date, end_date):
         st.error("Fallback file 'jammu_historical_weather.csv' not found. Please ensure it exists.")
         return pd.DataFrame()
 
+@st.cache_data(ttl=60)
 def get_real_time_data(api_key, lat, lon):
     """
     Fetches real-time weather data from OpenWeather API.
@@ -144,6 +146,10 @@ with tab2:
 # --- Real-time Weather Tab ---
 with tab3:
     st.header("Real-time Weather")
+    
+    if st.button("Refresh Real-time Data"):
+        st.experimental_rerun()
+        
     if real_time_data:
         col1, col2, col3 = st.columns(3)
         with col1:
