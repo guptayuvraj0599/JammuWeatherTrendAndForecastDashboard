@@ -146,9 +146,6 @@ with tab2:
 # --- Real-time Weather Tab ---
 with tab3:
     st.header("Real-time Weather")
-    
-    if st.button("Refresh Real-time Data"):
-        st.experimental_rerun()
         
     if real_time_data:
         col1, col2, col3 = st.columns(3)
